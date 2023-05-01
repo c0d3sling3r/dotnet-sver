@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemanticVersioning.Net.Henr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemanticVersioning.Net.Cli.Tests", "tests\SemanticVersioning.Net.Cli.Tests\SemanticVersioning.Net.Cli.Tests.csproj", "{C146B585-C0F3-424D-A5D1-0DC29B9567EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemanticVersioning.Net.MarlonBrando", "examples\SemanticVersioning.Net.MarlonBrando\SemanticVersioning.Net.MarlonBrando.csproj", "{31224752-A331-4EFE-ACE0-156686BCE737}"
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,10 +66,23 @@ Global
 		{C146B585-C0F3-424D-A5D1-0DC29B9567EE}.Release|x64.Build.0 = Release|Any CPU
 		{C146B585-C0F3-424D-A5D1-0DC29B9567EE}.Release|x86.ActiveCfg = Release|Any CPU
 		{C146B585-C0F3-424D-A5D1-0DC29B9567EE}.Release|x86.Build.0 = Release|Any CPU
+		{31224752-A331-4EFE-ACE0-156686BCE737}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31224752-A331-4EFE-ACE0-156686BCE737}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31224752-A331-4EFE-ACE0-156686BCE737}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{31224752-A331-4EFE-ACE0-156686BCE737}.Debug|x64.Build.0 = Debug|Any CPU
+		{31224752-A331-4EFE-ACE0-156686BCE737}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{31224752-A331-4EFE-ACE0-156686BCE737}.Debug|x86.Build.0 = Debug|Any CPU
+		{31224752-A331-4EFE-ACE0-156686BCE737}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31224752-A331-4EFE-ACE0-156686BCE737}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31224752-A331-4EFE-ACE0-156686BCE737}.Release|x64.ActiveCfg = Release|Any CPU
+		{31224752-A331-4EFE-ACE0-156686BCE737}.Release|x64.Build.0 = Release|Any CPU
+		{31224752-A331-4EFE-ACE0-156686BCE737}.Release|x86.ActiveCfg = Release|Any CPU
+		{31224752-A331-4EFE-ACE0-156686BCE737}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6E71C1E6-AD75-4F85-AFFC-E2016DFCF6AE} = {C0F8E86C-DDF1-4CDE-81ED-5E7A671E9D22}
 		{1992EE57-3727-40EC-95DD-2327E787D790} = {F307C377-8598-4D08-B8F2-1EE12A7B453A}
 		{C146B585-C0F3-424D-A5D1-0DC29B9567EE} = {059EA95A-9383-45DF-BE3E-EA0B1E6CDE45}
+		{31224752-A331-4EFE-ACE0-156686BCE737} = {F307C377-8598-4D08-B8F2-1EE12A7B453A}
 	EndGlobalSection
 EndGlobal

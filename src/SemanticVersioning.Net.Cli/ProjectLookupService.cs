@@ -23,13 +23,16 @@ public class ProjectLookupService
 
     private FileInfo[] GetProjectPathArray(string? workingDirectory = null)
     {
-        string solutionPath = TryGetSolutionPath(workingDirectory ?? Environment.CurrentDirectory);
-        
+        if (string.IsNullOrEmpty(workingDirectory))
+        {
+            workingDirectory = TryGetSolutionPath(Environment.CurrentDirectory);
+        }
+
         if (!_projectFileInfoArray.Any())
         {
             _projectFileInfoArray =
                 Directory
-                    .GetFiles(solutionPath, searchPattern: "*.csproj", SearchOption.AllDirectories)
+                    .GetFiles(workingDirectory, searchPattern: "*.csproj", SearchOption.AllDirectories)
                     .Order()
                     .Select(fp => new FileInfo(fp))
                     .ToArray();

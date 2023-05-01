@@ -10,7 +10,7 @@
     <ToolCommandName>dotnet-semver</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
     <PackageId>dotnet-semver</PackageId>
-    <Version>1.0.0-alpha.9</Version>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
