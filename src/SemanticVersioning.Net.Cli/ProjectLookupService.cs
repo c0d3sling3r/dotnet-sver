@@ -54,7 +54,7 @@ public class ProjectLookupService
                 for (int i = 0; i < ProjectPathArray.Length; i++)
                 {
                     selectionListBuilder.AppendLine(
-                        $"{i + 1}) {_projectFileInfoArray[i].Name} ({fileManager.GetVersionValue(i)})");
+                        $"{i + 1}) {_projectFileInfoArray[i].Name} {fileManager.GetVersionValue(i)}");
                 }
 
                 _projectSelectionList = selectionListBuilder.ToString();

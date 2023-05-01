@@ -11,7 +11,7 @@ public class ProjectVersionManager
 
     public void IncreaseMajorVersion(int projectIndex)
     {
-        SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex) ?? "1.0.0";
+        SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex);
         
         currentVersion.Major += 1;
         currentVersion.Minor = 0;
@@ -22,7 +22,7 @@ public class ProjectVersionManager
 
     public void DecreaseMajorVersion(int projectIndex)
     {
-        SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex) ?? "1.0.0";
+        SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex);
         
         currentVersion.Major -= 1;
         currentVersion.Minor = 0;
@@ -33,7 +33,7 @@ public class ProjectVersionManager
 
     public void IncreaseMinorVersion(int projectIndex)
     {
-        SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex) ?? "1.0.0";
+        SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex);
         
         currentVersion.Minor += 1;
         currentVersion.Patch = 0;
@@ -43,7 +43,7 @@ public class ProjectVersionManager
 
     public void DecreaseMinorVersion(int projectIndex)
     {
-        SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex) ?? "1.0.0";
+        SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex);
         
         currentVersion.Minor -= 1;
         currentVersion.Patch = 0;
@@ -53,7 +53,7 @@ public class ProjectVersionManager
 
     public void IncreasePatchVersion(int projectIndex)
     {
-        SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex) ?? "1.0.0";
+        SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex);
         
         currentVersion.Patch += 1;
         
@@ -62,7 +62,7 @@ public class ProjectVersionManager
 
     public void DecreasePatchVersion(int projectIndex)
     {
-        SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex) ?? "1.0.0";
+        SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex);
         
         currentVersion.Patch -= 1;
         
@@ -71,6 +71,6 @@ public class ProjectVersionManager
 
     public void SetVersion(int projectIndex, SemanticVersion version)
     {
-        _projectFileManager.TryUpdateVersion(projectIndex, version);
+        _projectFileManager.TryUpdateVersion(projectIndex, version, createNodeIfNotExists: true);
     }
 }

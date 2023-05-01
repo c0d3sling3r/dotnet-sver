@@ -5,51 +5,74 @@ namespace SemanticVersioning.Net;
 public class ProjectFileManager
 {
     private readonly ProjectLookupService _projectLookupService;
-    private XmlDocument? _xmlDocument;
-    
+
     public ProjectFileManager(ProjectLookupService projectLookupService)
     {
         _projectLookupService = projectLookupService;
     }
 
-    public string? GetVersionValue(int projectIndex)
+    public string GetVersionValue(int projectIndex)
     {
-        EnsureCsProjXmlDocumentLoaded(projectIndex);
+        XmlDocument xmlDocument = ReadCsProjXmlDocumentLoaded(projectIndex);
+
+        XmlNode? versionNode = xmlDocument?.SelectSingleNode("/Project/PropertyGroup/Version");
         
-        string? version = null;
-        
-        XmlNode? versionNode = _xmlDocument?.SelectSingleNode("/Project/PropertyGroup/Version");
-        
-        if (versionNode != null && versionNode.ChildNodes.Count > 0)
-            version = versionNode.FirstChild?.Value;
+        string version = versionNode?.FirstChild?.Value ?? "-no version-";
 
         return version;
     }
 
-    public void TryUpdateVersion(int projectIndex, SemanticVersion version)
+    public void TryUpdateVersion(int projectIndex, SemanticVersion version, bool createNodeIfNotExists = false)
     {
-        EnsureCsProjXmlDocumentLoaded(projectIndex);
-        
-        XmlNode? versionNode = _xmlDocument?.SelectSingleNode("/Project/PropertyGroup/Version");
+        XmlDocument xmlDocument = ReadCsProjXmlDocumentLoaded(projectIndex);
+
+        XmlNode? versionNode = xmlDocument?.SelectSingleNode("/Project/PropertyGroup/Version");
 
         if (versionNode == null)
-            return;
+        {
+            if (createNodeIfNotExists == false)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Error.WriteLine(
+                    $"The project [{_projectLookupService.ProjectPathArray[projectIndex].Name}] has not been versioned before." +
+                    "\r\nTry to set the version using the <set> command.");
+                Console.ResetColor();
 
-        string previousVersion = versionNode.InnerText;
-        versionNode.InnerText = version;
+                return;
+            }
+            
+            //TODO: What happens if there is no any Project/PropertyGroup at all?
+            XmlNode? selectSingleNode = xmlDocument?.SelectSingleNode("/Project/PropertyGroup");
+            
+            versionNode = xmlDocument?.CreateNode(XmlNodeType.Element, "Version", string.Empty);
+            string firstWhitespace = selectSingleNode?.FirstChild?.InnerText ?? "\r\n";
+            
+            XmlNode? lastChildElement = selectSingleNode?.ChildNodes
+                .Cast<XmlNode>()
+                .Last(x => x.NodeType == XmlNodeType.Element);
+            
+            XmlNode? whitespaceAfterLast = selectSingleNode?.InsertAfter(xmlDocument!.CreateSignificantWhitespace(firstWhitespace), lastChildElement);
+            selectSingleNode!.InsertAfter(versionNode!, whitespaceAfterLast);
+        }
 
-        XmlWriterSettings settings = new();
-        settings.Indent = true;
-        settings.OmitXmlDeclaration = true;
+        string previousVersion = string.IsNullOrEmpty(versionNode!.InnerText) == false ? versionNode!.InnerText : "-no version-";
+        versionNode!.InnerText = version;
+
+        XmlWriterSettings settings = new()
+        {
+            Indent = true,
+            OmitXmlDeclaration = true
+        };
 
         try
         {
             FileInfo projectFileInfo = _projectLookupService.ProjectPathArray[projectIndex];
-            
-            using XmlWriter writer = XmlWriter.Create(projectFileInfo.FullName, settings);
-            _xmlDocument?.Save(writer);
 
-            Console.WriteLine($"The project [{projectFileInfo.Name}] version settings successfully done. ({previousVersion} => {version})");
+            using XmlWriter writer = XmlWriter.Create(projectFileInfo.FullName, settings);
+            xmlDocument?.Save(writer);
+
+            Console.WriteLine(
+                $"The project [{projectFileInfo.Name}] version settings successfully done. ({previousVersion} => {version})");
         }
         catch (Exception)
         {
@@ -57,15 +80,15 @@ public class ProjectFileManager
         }
     }
 
-    private void EnsureCsProjXmlDocumentLoaded(int projectIndex)
+    private XmlDocument ReadCsProjXmlDocumentLoaded(int projectIndex)
     {
-        if (_xmlDocument != null)
-            return;
-        
-        _xmlDocument = new XmlDocument
+        XmlDocument xmlDocument = new()
         {
             PreserveWhitespace = true
         };
-        _xmlDocument.Load(_projectLookupService.ProjectPathArray[projectIndex].FullName);
+        
+        xmlDocument.Load(_projectLookupService.ProjectPathArray[projectIndex].FullName);
+
+        return xmlDocument;
     }
 }
