@@ -7,10 +7,10 @@
     <Nullable>enable</Nullable>
     <RootNamespace>SemanticVersioning.Net</RootNamespace>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>dotnet-semver</ToolCommandName>
+    <ToolCommandName>dotnet-sver</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
-    <PackageId>dotnet-semver</PackageId>
-    <Version>0.1.1</Version>
+    <PackageId>dotnet-sver</PackageId>
+    <Version>0.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

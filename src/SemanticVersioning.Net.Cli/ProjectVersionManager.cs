@@ -24,7 +24,9 @@ public class ProjectVersionManager
     {
         SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex);
         
-        currentVersion.Major -= 1;
+        if (currentVersion.Major > 0)
+            currentVersion.Major -= 1;
+        
         currentVersion.Minor = 0;
         currentVersion.Patch = 0;
         
@@ -45,7 +47,9 @@ public class ProjectVersionManager
     {
         SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex);
         
-        currentVersion.Minor -= 1;
+        if (currentVersion.Minor > 0)
+            currentVersion.Minor -= 1;
+        
         currentVersion.Patch = 0;
         
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
@@ -64,7 +68,8 @@ public class ProjectVersionManager
     {
         SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex);
         
-        currentVersion.Patch -= 1;
+        if (currentVersion.Patch > 0)
+            currentVersion.Patch -= 1;
         
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
     }
@@ -73,4 +78,6 @@ public class ProjectVersionManager
     {
         _projectFileManager.TryUpdateVersion(projectIndex, version, createNodeIfNotExists: true);
     }
+
+    public string GetCurrentVersionString(int projectIndex) => _projectFileManager.GetVersionValue(projectIndex);
 }
