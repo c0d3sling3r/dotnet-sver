@@ -8,6 +8,7 @@ public class ProjectLookupService
 {
     private FileInfo[] _projectFileInfoArray;
     private string _projectSelectionList;
+    
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
     public ProjectLookupService(IServiceScopeFactory serviceScopeFactory)
@@ -18,6 +19,7 @@ public class ProjectLookupService
         _projectSelectionList = string.Empty;
     }
 
+    public short ProjectsCount => (short) GetProjectPathArray().Length;
     public FileInfo[] ProjectPathArray => GetProjectPathArray();
     public string ProjectSelectionList => GetProjectFullNamesSelectionList();
 

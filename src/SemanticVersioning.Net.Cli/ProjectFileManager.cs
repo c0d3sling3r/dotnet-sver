@@ -32,7 +32,7 @@ public class ProjectFileManager
         {
             if (createNodeIfNotExists == false)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Error.WriteLine(
                     $"The project [{_projectLookupService.ProjectPathArray[projectIndex].Name}] has not been versioned before." +
                     "\r\nTry to set the version using the <set> command.");

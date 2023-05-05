@@ -3,10 +3,20 @@
 public class ProjectVersionManager
 {
     private readonly ProjectFileManager _projectFileManager;
+    private readonly ProjectLookupService _projectLookupService;
 
-    public ProjectVersionManager(ProjectFileManager projectFileManager)
+    public ProjectVersionManager(ProjectFileManager projectFileManager, ProjectLookupService projectLookupService)
     {
         _projectFileManager = projectFileManager;
+        _projectLookupService = projectLookupService;
+    }
+
+    public void IncreaseAllMajorVersions()
+    {
+        for (int i = 0; i < _projectLookupService.ProjectsCount; i++)
+        {
+            IncreaseMajorVersion(i);
+        }
     }
 
     public void IncreaseMajorVersion(int projectIndex)
@@ -18,6 +28,14 @@ public class ProjectVersionManager
         currentVersion.Patch = 0;
         
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
+    }
+
+    public void DecreaseAllMajorVersions()
+    {
+        for (int i = 0; i < _projectLookupService.ProjectsCount; i++)
+        {
+            DecreaseMajorVersion(i);
+        }
     }
 
     public void DecreaseMajorVersion(int projectIndex)
@@ -33,6 +51,14 @@ public class ProjectVersionManager
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
     }
 
+    public void IncreaseAllMinorVersions()
+    {
+        for (int i = 0; i < _projectLookupService.ProjectsCount; i++)
+        {
+            IncreaseMinorVersion(i);
+        }
+    }
+
     public void IncreaseMinorVersion(int projectIndex)
     {
         SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex);
@@ -41,6 +67,14 @@ public class ProjectVersionManager
         currentVersion.Patch = 0;
         
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
+    }
+
+    public void DecreaseAllMinorVersions()
+    {
+        for (int i = 0; i < _projectLookupService.ProjectsCount; i++)
+        {
+            DecreaseMinorVersion(i);
+        }
     }
 
     public void DecreaseMinorVersion(int projectIndex)
@@ -55,6 +89,14 @@ public class ProjectVersionManager
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
     }
 
+    public void IncreaseAllPatchVersions()
+    {
+        for (int i = 0; i < _projectLookupService.ProjectsCount; i++)
+        {
+            IncreasePatchVersion(i);
+        }
+    }
+
     public void IncreasePatchVersion(int projectIndex)
     {
         SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex);
@@ -62,6 +104,14 @@ public class ProjectVersionManager
         currentVersion.Patch += 1;
         
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
+    }
+
+    public void DecreaseAllPatchVersions()
+    {
+        for (int i = 0; i < _projectLookupService.ProjectsCount; i++)
+        {
+            DecreasePatchVersion(i);
+        }
     }
 
     public void DecreasePatchVersion(int projectIndex)
@@ -77,6 +127,14 @@ public class ProjectVersionManager
     public void SetVersion(int projectIndex, SemanticVersion version)
     {
         _projectFileManager.TryUpdateVersion(projectIndex, version, createNodeIfNotExists: true);
+    }
+
+    public void SetAllVersions(string version)
+    {
+        for (int i = 0; i < _projectLookupService.ProjectsCount; i++)
+        {
+            SetVersion(i, version);
+        }
     }
 
     public string GetCurrentVersionString(int projectIndex) => _projectFileManager.GetVersionValue(projectIndex);

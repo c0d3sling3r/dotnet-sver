@@ -10,8 +10,6 @@ public class SemverCommand : RootCommand
     {
         Initialize();
 
-        AddGlobalOption(SemverOptions.AllOption);
-
         AddCommand(listCommand);
         AddCommand(upgradeVersionCommand);
         AddCommand(degradeVersionCommand);
