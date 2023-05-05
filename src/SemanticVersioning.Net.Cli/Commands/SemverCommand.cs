@@ -10,8 +10,6 @@ public class SemverCommand : RootCommand
     {
         Initialize();
 
-        AddGlobalOption(SemverOptions.AllOption);
-
         AddCommand(listCommand);
         AddCommand(upgradeVersionCommand);
         AddCommand(degradeVersionCommand);
@@ -26,6 +24,6 @@ public class SemverCommand : RootCommand
             .InformationalVersion!;
 
         Description = $"Semantic Versioning {versionString}";
-        Name = "dotnet-semver";
+        Name = "dotnet-sver";
     }
 }
