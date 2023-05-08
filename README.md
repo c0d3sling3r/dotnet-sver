@@ -1,5 +1,6 @@
 # dotnet-sver
-A CLI application for adjusting C# projects' versions using semantic principles.
+***
+`dotnet-sver` is a CLI tool for managing project versions using Semantic Versioning in .NET applications. It provides a set of commands to list, set, upgrade and degrade project versions, making it easy to handle versioning within your development workflow.
 
 Generally semantic versioning has three main parts. *MAJOR*, *MINOR* and *PATCH* and represents with the following template: X.Y.Z which X holds the *MAJOR* part, Y holds the *MINOR* and Z holds the *PATCH*.
 
@@ -7,30 +8,44 @@ It also supports pre-release and build versions which will be appended to X.Y.Z.
 
 > For more information, I refer you to [here](https://semver.org/).
 
-# Getting Started
-## Installation
+# Features
 ***
-Install from the universal source:
+- List the project versions within the target solution using `list` command.
+- Upgrade the current version of the projects using `upgrade` command.
+- Degrade the current version of the projects using `degrade` command.
+- Set the version of the projects using the `set` command.
+- Support for Semantic Versioning (MAJOR.MINOR.PATCH).
+- Option to specify the project number for version manipulation.
+- Option to operate on all projects at once.
+
+# Getting Started
+***
+## Prerequisites
+- Make sure you have latest [.NET SDK](https://dotnet.microsoft.com/en-us/download) installed on your machine.
+
+## Installation
+Install `dotnet-sver` from the universal source as a global tool using the following command:
 ```shell
-dotnet tool install -g dotnet-sver
+$ dotnet tool install -g dotnet-sver
 ```
 
-Build locally and install:
+Build locally and install globally:
 ```shell
-cd src
-cd SemanticVersioning.Net.Cli
-dotnet pack -c Release -o nupkg
-dotnet tool install -g dotnet-sver --add-source .\nupkg
+$ git clone https://github.com/shojajou/dotnet-sver
+$ cd SemanticVersioning.Net/src/SemanticVersioning.Net.Cli
+$ dotnet pack -c Release -o nupkg
+$ dotnet tool install -g dotnet-sver --add-source .\nupkg
 ```
 
 ## Usage
-***
+> You can call `dotnet sver` as well as `dotnet-sver` to use the tool.
+
 First, your cwd(current working directory) must be somewhere inside your solution directory.
 ```shell
 cd <somewhere-inside-yout-target-solution>
 ```
 
-### *LISTING:* `dotnet-sver list`
+### List Command
 
 By executing this command, your projects and their versions will be printed out.
 
@@ -43,7 +58,7 @@ $ dotnet-sver list
 5) Project-5.csproj [version]
 ```
   
-### *UPGRADING:* `dotnet-sver upgrade`
+### Upgrade Command
  
 *Options:*
 
@@ -70,7 +85,7 @@ There are two ways of upgrading the projects:
   $ dotnet-sver upgrade -a --minor 
   ```
   
-### *DEGRADING:* `dotnet-sver degrade`
+### Degrade Command
  
 *Options:*
 
@@ -97,7 +112,7 @@ There are two ways of degrading the projects:
   $ dotnet-sver degrade -a --minor 
   ```
   
-### *SETTING EXPLICITLY:* `dotnet-sver set`
+### Set Command
 Maybe you'll be more comfortable to set the versions explicitly. I have your back 😎. Use the magical `set` command.
  
 *Options:*
@@ -121,3 +136,9 @@ There are two ways of setting the projects:
   # For instance, the following command, degrades the Y part of the version of the all projects.
   $ dotnet-sver degrade -a --minor 
   ```
+
+# Contributing
+Contributions are welcome! If you encounter any issues or have suggestions for improvement, please open an issue on the GitHub repository. Pull requests are also appreciated.
+
+# License
+This project is licensed under the [MIT License](https://opensource.org/license/mit/).
