@@ -1,6 +1,7 @@
 ﻿using System.Text;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace SemanticVersioning.Net;
 
@@ -14,27 +15,25 @@ public class ProjectLookupService
     public ProjectLookupService(IServiceScopeFactory serviceScopeFactory)
     {
         _serviceScopeFactory = serviceScopeFactory;
-        
+
         _projectFileInfoArray = Array.Empty<FileInfo>();
         _projectSelectionList = string.Empty;
     }
 
     public short ProjectsCount => (short) GetProjectPathArray().Length;
     public FileInfo[] ProjectPathArray => GetProjectPathArray();
-    public string ProjectSelectionList => GetProjectFullNamesSelectionList();
 
-    private FileInfo[] GetProjectPathArray(string? workingDirectory = null)
+    private FileInfo[] GetProjectPathArray(string? currentDirectoryPath = null)
     {
-        if (string.IsNullOrEmpty(workingDirectory))
-        {
-            workingDirectory = TryGetSolutionPath(Environment.CurrentDirectory);
-        }
+        currentDirectoryPath ??= Environment.CurrentDirectory;
+        
+        if (ValidateSolutionDirectory(currentDirectoryPath) == false)
+            return Array.Empty<FileInfo>();
 
         if (!_projectFileInfoArray.Any())
         {
-            _projectFileInfoArray =
-                Directory
-                    .GetFiles(workingDirectory, searchPattern: "*.csproj", SearchOption.AllDirectories)
+            _projectFileInfoArray = Directory
+                    .GetFiles(currentDirectoryPath, searchPattern: "*.csproj", SearchOption.AllDirectories)
                     .Order()
                     .Select(fp => new FileInfo(fp))
                     .ToArray();
@@ -43,7 +42,7 @@ public class ProjectLookupService
         return _projectFileInfoArray;
     }
 
-    private string GetProjectFullNamesSelectionList()
+    public string DisplayProjectsList()
     {
         StringBuilder selectionListBuilder = new(string.Empty);
 
@@ -55,8 +54,21 @@ public class ProjectLookupService
             {
                 for (int i = 0; i < ProjectPathArray.Length; i++)
                 {
-                    selectionListBuilder.AppendLine(
-                        $"{i + 1}) {_projectFileInfoArray[i].Name} {fileManager.GetVersionValue(i)}");
+                    Console.Write($"{i + 1}) {_projectFileInfoArray[i].Name} ");
+
+                    string? versionValue = fileManager.GetVersionValue(i);
+                    if (string.IsNullOrWhiteSpace(versionValue) == false)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine(versionValue);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("-no version-");
+                    }
+
+                    Console.ResetColor();
                 }
 
                 _projectSelectionList = selectionListBuilder.ToString();
@@ -66,13 +78,16 @@ public class ProjectLookupService
         return _projectSelectionList;
     }
     
-    private static string TryGetSolutionPath(string? currentDirectoryPath = null)
+    private bool ValidateSolutionDirectory(string? currentDirectoryPath = null)
     {
         DirectoryInfo currentDirectoryInfo = new(currentDirectoryPath ?? Environment.CurrentDirectory);
 
-        if (!currentDirectoryInfo.GetFiles("*.sln").Any())
-            return TryGetSolutionPath(currentDirectoryInfo.Parent?.FullName);
-     
-        return currentDirectoryInfo.FullName;
+        if (currentDirectoryInfo.GetFiles("*.sln").Any()) return true;
+
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Error.WriteLine("The solution file was not found. Try again inside the solution root directory.\r\n" +
+                                "OR pass the solution directory by --sln-dir (-s) option.");
+        return false;
+
     }
 }

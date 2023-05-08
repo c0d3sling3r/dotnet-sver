@@ -6,31 +6,26 @@ public class UpgradeVersionCommand : Command
 {
     private readonly ProjectVersionManager _projectVersionManager;
     
-    public UpgradeVersionCommand(ProjectVersionManager projectVersionManager) : base("upgrade", "Upgrades the version of the chosen project(s).")
+    public UpgradeVersionCommand(ProjectVersionManager projectVersionManager) 
+        : base("upgrade", "Upgrades the version of the chosen project(s).")
     {
         _projectVersionManager = projectVersionManager;
         
-        Option<int> projectListNumOption = new(new [] {"--project-number", "-p"}, "Specifies the project number targeting for version upgrading.");
-        Option<bool> majorOption = new("--major", "Upgrades the major part.");
-        Option<bool> minorOption = new("--minor", "Upgrades the minor part.");
-        Option<bool> patchOption = new("--patch", "Upgrades the patch part.");
-        Option<bool> allOption = new(new [] {"--all", "-a"}, "Upgrades the patch part of all the projects.");
-        
-        projectListNumOption.Arity = ArgumentArity.ZeroOrOne;
-        majorOption.Arity = ArgumentArity.ZeroOrOne;
-        minorOption.Arity = ArgumentArity.ZeroOrOne;
-        patchOption.Arity = ArgumentArity.ZeroOrOne;
-        allOption.Arity = ArgumentArity.ZeroOrOne;
-        
-        AddOption(projectListNumOption);
-        AddOption(majorOption);
-        AddOption(minorOption);
-        AddOption(patchOption);
-        AddOption(allOption);
+        Option<int> projectListNumOption = AddProjectListNumOption();
+        Option<bool> majorOption = AddMajorOption();
+        Option<bool> minorOption = AddMinorOption();
+        Option<bool> patchOption = AddPatchOption();
+        Option<bool> allOption = AddAllOption();
 
         this.SetHandler(Handle, projectListNumOption, majorOption, minorOption, patchOption, allOption);
         
-        AddValidator(result =>
+        AddValidator(allOption, projectListNumOption, majorOption, minorOption, patchOption);
+    }
+
+    private void AddValidator(Option<bool> allOption, Option<int> projectListNumOption, Option<bool> majorOption, Option<bool> minorOption,
+        Option<bool> patchOption)
+    {
+        base.AddValidator(result =>
         {
             try
             {
@@ -38,8 +33,8 @@ public class UpgradeVersionCommand : Command
                 {
                     if (result.GetValueForOption(projectListNumOption) != 0)
                         return;
-                
-                    result.ErrorMessage = "To manipulate versions, you must pass --project-number (-p) option\r\n"+
+
+                    result.ErrorMessage = "To manipulate versions, you must pass --project-number (-p) option\r\n" +
                                           "OR --all (-a) option to operate on all projects.";
                 }
                 else if (result.GetValueForOption(allOption) == true
@@ -48,7 +43,7 @@ public class UpgradeVersionCommand : Command
                     result.ErrorMessage = "There is an ambiguity for project selection.\r\n" +
                                           "Please pass either --project-number (-p) option OR --all option for all projects.";
                 }
-                else if (result.GetValueForOption(majorOption) == false && 
+                else if (result.GetValueForOption(majorOption) == false &&
                          result.GetValueForOption(minorOption) == false &&
                          result.GetValueForOption(patchOption) == false)
                 {
@@ -62,6 +57,52 @@ public class UpgradeVersionCommand : Command
                 Console.ResetColor();
             }
         });
+    }
+
+    private Option<bool> AddAllOption()
+    {
+        Option<bool> allOption = new(new[] { "--all", "-a" }, "Upgrades the patch part of all the projects.");
+        allOption.Arity = ArgumentArity.ZeroOrOne;
+
+        AddOption(allOption);
+        return allOption;
+    }
+
+    private Option<bool> AddPatchOption()
+    {
+        Option<bool> patchOption = new("--patch", "Upgrades the patch part.");
+        patchOption.Arity = ArgumentArity.ZeroOrOne;
+
+        AddOption(patchOption);
+        return patchOption;
+    }
+
+    private Option<bool> AddMinorOption()
+    {
+        Option<bool> minorOption = new("--minor", "Upgrades the minor part.");
+        minorOption.Arity = ArgumentArity.ZeroOrOne;
+
+        AddOption(minorOption);
+        return minorOption;
+    }
+
+    private Option<bool> AddMajorOption()
+    {
+        Option<bool> majorOption = new("--major", "Upgrades the major part.");
+        majorOption.Arity = ArgumentArity.ZeroOrOne;
+
+        AddOption(majorOption);
+        return majorOption;
+    }
+
+    private Option<int> AddProjectListNumOption()
+    {
+        Option<int> projectListNumOption = new(new[] { "--project-number", "-p" },
+            "Specifies the project number targeting for version upgrading.");
+        projectListNumOption.Arity = ArgumentArity.ZeroOrOne;
+
+        AddOption(projectListNumOption);
+        return projectListNumOption;
     }
 
     private void Handle(int projectListNum, bool upgradeMajor, bool upgradeMinor, bool upgradePatch, bool upgradeAll)

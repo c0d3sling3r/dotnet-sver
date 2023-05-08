@@ -68,6 +68,6 @@ public class SemanticVersion
         return versionBuilder.ToString();
     }
 
-    public static implicit operator SemanticVersion(string version) => TryParse(version) ?? new SemanticVersion();
+    public static implicit operator SemanticVersion(string? version) => TryParse(version ?? "0.0.0") ?? new SemanticVersion();
     public static implicit operator string(SemanticVersion version) => version.ToString();
 }

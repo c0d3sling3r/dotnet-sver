@@ -15,6 +15,6 @@ public class ListCommand : Command
 
     private void Handle()
     {
-        Console.WriteLine(_lookupService.ProjectSelectionList);
+        _lookupService.DisplayProjectsList();
     }
 }

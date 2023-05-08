@@ -137,5 +137,5 @@ public class ProjectVersionManager
         }
     }
 
-    public string GetCurrentVersionString(int projectIndex) => _projectFileManager.GetVersionValue(projectIndex);
+    public string GetCurrentVersionString(int projectIndex) => _projectFileManager.GetVersionValue(projectIndex) ?? "0.0.0";
 }

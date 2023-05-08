@@ -11,15 +11,13 @@ public class ProjectFileManager
         _projectLookupService = projectLookupService;
     }
 
-    public string GetVersionValue(int projectIndex)
+    public string? GetVersionValue(int projectIndex)
     {
         XmlDocument xmlDocument = ReadCsProjXmlDocumentLoaded(projectIndex);
 
         XmlNode? versionNode = xmlDocument?.SelectSingleNode("/Project/PropertyGroup/Version");
-        
-        string version = versionNode?.FirstChild?.Value ?? "-no version-";
 
-        return version;
+        return versionNode?.FirstChild?.Value;
     }
 
     public void TryUpdateVersion(int projectIndex, SemanticVersion version, bool createNodeIfNotExists = false)

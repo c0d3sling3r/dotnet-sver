@@ -6,32 +6,22 @@ public class SetVersionCommand : Command
 {
     private readonly ProjectVersionManager _projectVersionManager;
     
-    public SetVersionCommand(ProjectVersionManager projectVersionManager) : base("set", "Sets the version of the chosen project(s).")
+    public SetVersionCommand(ProjectVersionManager projectVersionManager) 
+        : base("set", "Sets the version of the chosen project(s).")
     {
         _projectVersionManager = projectVersionManager;
         
-        Argument<string> versionArgument = new("version");
-        versionArgument.AddValidator(validate =>
-        {
-            if (SemanticVersion.TryParse(validate.GetValueForArgument(versionArgument)) == null)
-            {
-                validate.ErrorMessage = "<version> argument is invalid.";
-            }
-        });
-        AddArgument(versionArgument);
-        
-        Option<int> projectListNumOption = new(new [] {"--project-number", "-p"}, "Specifies the project number targeting for version upgrading.");
-        projectListNumOption.Arity = ArgumentArity.ZeroOrOne;
-        
-        Option<bool> allOption = new(new [] {"--all", "-a"}, "Sets the version of all the projects.");
-        allOption.Arity = ArgumentArity.ZeroOrOne;
-        
-        AddOption(projectListNumOption);
-        AddOption(allOption);
+        Argument<string> versionArgument = AddVersionArgument();
+        Option<int> projectListNumOption = AddProjectListNumOption();
+        Option<bool> allOption = AddAllOption();
         
         this.SetHandler(Handle, projectListNumOption, versionArgument, allOption);
-        
-        AddValidator(result =>
+        AddValidator(allOption, projectListNumOption);
+    }
+
+    private void AddValidator(Option<bool> allOption, Option<int> projectListNumOption)
+    {
+        base.AddValidator(result =>
         {
             try
             {
@@ -39,8 +29,8 @@ public class SetVersionCommand : Command
                 {
                     if (result.GetValueForOption(projectListNumOption) != 0)
                         return;
-                
-                    result.ErrorMessage = "To manipulate versions, you must pass --project-number (-p) option\r\n"+
+
+                    result.ErrorMessage = "To manipulate versions, you must pass --project-number (-p) option\r\n" +
                                           "OR --all option to operate on all projects.";
                 }
                 else if (result.GetValueForOption(allOption) == true
@@ -57,6 +47,43 @@ public class SetVersionCommand : Command
                 Console.ResetColor();
             }
         });
+    }
+
+    private Option<bool> AddAllOption()
+    {
+        Option<bool> allOption = new(new[] { "--all", "-a" }, "Sets the version of all the projects.");
+        allOption.Arity = ArgumentArity.ZeroOrOne;
+        
+        AddOption(allOption);
+        
+        return allOption;
+    }
+
+    private Option<int> AddProjectListNumOption()
+    {
+        Option<int> projectListNumOption = new(new[] { "--project-number", "-p" },
+            "Specifies the project number targeting for version upgrading.");
+        projectListNumOption.Arity = ArgumentArity.ZeroOrOne;
+        
+        AddOption(projectListNumOption);
+        
+        return projectListNumOption;
+    }
+
+    private Argument<string> AddVersionArgument()
+    {
+        Argument<string> versionArgument = new("version");
+        versionArgument.AddValidator(validate =>
+        {
+            if (SemanticVersion.TryParse(validate.GetValueForArgument(versionArgument)) == null)
+            {
+                validate.ErrorMessage = "<version> argument is invalid.";
+            }
+        });
+        
+        AddArgument(versionArgument);
+        
+        return versionArgument;
     }
 
     private void Handle(int projectNumber, string version, bool all)
