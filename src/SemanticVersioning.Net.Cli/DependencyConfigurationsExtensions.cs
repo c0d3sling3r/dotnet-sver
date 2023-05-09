@@ -17,7 +17,7 @@ public static class DependencyConfigurationsExtensions
         services.AddScoped<SemverCommand>();
         services.AddScoped<ListCommand>();
         services.AddScoped<UpgradeVersionCommand>();
-        services.AddScoped<DegradeVersionCommand>();
+        services.AddScoped<DowngradeVersionCommand>();
         services.AddScoped<SetVersionCommand>();
 
         return services;

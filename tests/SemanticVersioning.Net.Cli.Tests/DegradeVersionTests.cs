@@ -2,15 +2,15 @@
 
 namespace SemanticVersioning.Net.Cli.Tests;
 
-public class DegradeVersionTests : SemanticVersioningTestBase
+public class DowngradeVersionTests : SemanticVersioningTestBase
 {
-    public DegradeVersionTests(SemanticVersioningTestFixture semanticVersioningTestFixture) : base(semanticVersioningTestFixture)
+    public DowngradeVersionTests(SemanticVersioningTestFixture semanticVersioningTestFixture) : base(semanticVersioningTestFixture)
     {
         
     }
     
     [Fact]
-    public void DegradeMajorVersion_ShouldNotDegradeZero()
+    public void DowngradeMajorVersion_ShouldNotDowngradeZero()
     {
         // Arrange
         ProjectVersionManager projectVersionManager =
@@ -27,7 +27,7 @@ public class DegradeVersionTests : SemanticVersioningTestBase
     }
 
     [Fact]
-    public void DegradeMinorVersion_ShouldNotDegradeZero()
+    public void DowngradeMinorVersion_ShouldNotDowngradeZero()
     {
         // Arrange
         ProjectVersionManager projectVersionManager =
@@ -44,7 +44,7 @@ public class DegradeVersionTests : SemanticVersioningTestBase
     }
 
     [Fact]
-    public void DegradePatchVersion_ShouldNotDegradeZero()
+    public void DowngradePatchVersion_ShouldNotDowngradeZero()
     {
         // Arrange
         ProjectVersionManager projectVersionManager =

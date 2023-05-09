@@ -27,6 +27,9 @@ public class ProjectVersionManager
         currentVersion.Minor = 0;
         currentVersion.Patch = 0;
         
+        ResetPreReleaseVersion(currentVersion);
+        ResetBuildVersion(currentVersion);
+        
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
     }
 
@@ -48,6 +51,9 @@ public class ProjectVersionManager
         currentVersion.Minor = 0;
         currentVersion.Patch = 0;
         
+        ResetPreReleaseVersion(currentVersion);
+        ResetBuildVersion(currentVersion);
+        
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
     }
 
@@ -65,6 +71,9 @@ public class ProjectVersionManager
         
         currentVersion.Minor += 1;
         currentVersion.Patch = 0;
+        
+        ResetPreReleaseVersion(currentVersion);
+        ResetBuildVersion(currentVersion);
         
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
     }
@@ -86,6 +95,9 @@ public class ProjectVersionManager
         
         currentVersion.Patch = 0;
         
+        ResetPreReleaseVersion(currentVersion);
+        ResetBuildVersion(currentVersion);
+        
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
     }
 
@@ -102,6 +114,9 @@ public class ProjectVersionManager
         SemanticVersion currentVersion = _projectFileManager.GetVersionValue(projectIndex);
         
         currentVersion.Patch += 1;
+        
+        ResetPreReleaseVersion(currentVersion);
+        ResetBuildVersion(currentVersion);
         
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
     }
@@ -121,6 +136,9 @@ public class ProjectVersionManager
         if (currentVersion.Patch > 0)
             currentVersion.Patch -= 1;
         
+        ResetPreReleaseVersion(currentVersion);
+        ResetBuildVersion(currentVersion);
+        
         _projectFileManager.TryUpdateVersion(projectIndex, currentVersion);
     }
 
@@ -138,4 +156,13 @@ public class ProjectVersionManager
     }
 
     public string GetCurrentVersionString(int projectIndex) => _projectFileManager.GetVersionValue(projectIndex) ?? "0.0.0";
+
+    private void ResetPreReleaseVersion(SemanticVersion version)
+    {
+        version.PreRelease = string.Empty;
+    }
+    private void ResetBuildVersion(SemanticVersion version)
+    {
+        version.Build = string.Empty;
+    }
 }

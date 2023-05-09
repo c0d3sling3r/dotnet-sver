@@ -2,12 +2,12 @@
 
 namespace SemanticVersioning.Net.Commands;
 
-public class DegradeVersionCommand : Command
+public class DowngradeVersionCommand : Command
 {
     private readonly ProjectVersionManager _projectVersionManager;
     
-    public DegradeVersionCommand(ProjectVersionManager projectVersionManager) 
-        : base("degrade", "Degrades the version of the chosen project(s).")
+    public DowngradeVersionCommand(ProjectVersionManager projectVersionManager) 
+        : base("downgrade", "Downgrades the version of the chosen project(s).")
     {
         _projectVersionManager = projectVersionManager;
 
@@ -61,7 +61,7 @@ public class DegradeVersionCommand : Command
 
     private Option<bool> AddAllOption()
     {
-        Option<bool> allOption = new(new[] { "--all", "-a" }, "Degrades the version of all the projects.");
+        Option<bool> allOption = new(new[] { "--all", "-a" }, "Downgrades the version of all the projects.");
         allOption.Arity = ArgumentArity.ZeroOrOne;
 
         AddOption(allOption);
@@ -70,7 +70,7 @@ public class DegradeVersionCommand : Command
 
     private Option<bool> AddPatchOption()
     {
-        Option<bool> patchOption = new("--patch", "Degrades the patch part.");
+        Option<bool> patchOption = new("--patch", "Downgrades the patch part.");
         patchOption.Arity = ArgumentArity.ZeroOrOne;
 
         AddOption(patchOption);
@@ -79,7 +79,7 @@ public class DegradeVersionCommand : Command
 
     private Option<bool> AddMinorOption()
     {
-        Option<bool> minorOption = new("--minor", "Degrades the minor part.");
+        Option<bool> minorOption = new("--minor", "Downgrades the minor part.");
         minorOption.Arity = ArgumentArity.ZeroOrOne;
 
         AddOption(minorOption);
@@ -88,7 +88,7 @@ public class DegradeVersionCommand : Command
 
     private Option<bool> AddMajorOption()
     {
-        Option<bool> majorOption = new("--major", "Degrades the major part.");
+        Option<bool> majorOption = new("--major", "Downgrades the major part.");
         majorOption.Arity = ArgumentArity.ZeroOrOne;
 
         AddOption(majorOption);
@@ -98,42 +98,42 @@ public class DegradeVersionCommand : Command
     private Option<int> AddProjectListNumOption()
     {
         Option<int> projectListNumOption = new(new[] { "--project-number", "-p" },
-            "Specifies the project number targeting for version degrading.");
+            "Specifies the project number targeting for version downgrading.");
         projectListNumOption.Arity = ArgumentArity.ZeroOrOne;
 
         AddOption(projectListNumOption);
         return projectListNumOption;
     }
 
-    private void Handle(int projectListNum, bool degradeMajor, bool degradeMinor, bool degradePatch, bool degradeAll)
+    private void Handle(int projectListNum, bool downgradeMajor, bool downgradeMinor, bool downgradePatch, bool downgradeAll)
     {
-        if (degradeAll)
-            DegradeAll(degradeMajor, degradeMinor, degradePatch);
+        if (downgradeAll)
+            DowngradeAll(downgradeMajor, downgradeMinor, downgradePatch);
         else
-            DegradeOne(projectListNum - 1, degradeMajor, degradeMinor, degradePatch);
+            DowngradeOne(projectListNum - 1, downgradeMajor, downgradeMinor, downgradePatch);
     }
 
-    private void DegradeOne(int projectIndex, bool degradeMajor, bool degradeMinor, bool degradePatch)
+    private void DowngradeOne(int projectIndex, bool downgradeMajor, bool downgradeMinor, bool downgradePatch)
     {
-        if (degradeMajor) 
+        if (downgradeMajor) 
             _projectVersionManager.DecreaseMajorVersion(projectIndex);
 
-        if (degradeMinor)
+        if (downgradeMinor)
             _projectVersionManager.DecreaseMinorVersion(projectIndex);
         
-        if (degradePatch)
+        if (downgradePatch)
             _projectVersionManager.DecreasePatchVersion(projectIndex);
     }
 
-    private void DegradeAll(bool degradeMajor, bool degradeMinor, bool degradePatch)
+    private void DowngradeAll(bool downgradeMajor, bool downgradeMinor, bool downgradePatch)
     {
-        if (degradeMajor) 
+        if (downgradeMajor) 
             _projectVersionManager.DecreaseAllMajorVersions();
 
-        if (degradeMinor)
+        if (downgradeMinor)
             _projectVersionManager.DecreaseAllMinorVersions();
         
-        if (degradePatch)
+        if (downgradePatch)
             _projectVersionManager.DecreaseAllPatchVersions();
     }
 }

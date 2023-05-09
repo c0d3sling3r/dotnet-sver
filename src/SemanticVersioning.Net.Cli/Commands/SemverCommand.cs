@@ -6,13 +6,13 @@ namespace SemanticVersioning.Net.Commands;
 public class SemverCommand : RootCommand
 {
     public SemverCommand(ListCommand listCommand, UpgradeVersionCommand upgradeVersionCommand,
-        DegradeVersionCommand degradeVersionCommand, SetVersionCommand setVersionCommand)
+        DowngradeVersionCommand downgradeVersionCommand, SetVersionCommand setVersionCommand)
     {
         Initialize();
 
         AddCommand(listCommand);
         AddCommand(upgradeVersionCommand);
-        AddCommand(degradeVersionCommand);
+        AddCommand(downgradeVersionCommand);
         AddCommand(setVersionCommand);
     }
 
