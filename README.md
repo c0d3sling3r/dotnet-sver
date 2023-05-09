@@ -23,15 +23,15 @@ It also supports pre-release and build versions which will be appended to X.Y.Z.
 ## Installation
 Install `dotnet-sver` from the universal source as a global tool using the following command:
 ```shell
-dotnet tool install -g dotnet-sver
+$ dotnet tool install -g dotnet-sver
 ```
 
 Build locally and install globally:
 ```shell
-git clone https://github.com/shojajou/dotnet-sver
-cd SemanticVersioning.Net/src/SemanticVersioning.Net.Cli
-dotnet pack -c Release -o nupkg
-dotnet tool install -g dotnet-sver --add-source .\nupkg
+$ git clone https://github.com/shojajou/dotnet-sver
+$ cd SemanticVersioning.Net/src/SemanticVersioning.Net.Cli
+$ dotnet pack -c Release -o nupkg
+$ dotnet tool install -g dotnet-sver --add-source .\nupkg
 ```
 
 ## Usage
@@ -47,7 +47,7 @@ cd <somewhere-inside-yout-target-solution>
 By executing this command, your projects and their versions will be printed out.
 
 ```shell
-dotnet-sver list
+$ dotnet-sver list
 1) Project-1.csproj [version]
 2) Project-2.csproj [version]
 3) Project-3.csproj [version]
@@ -69,17 +69,17 @@ dotnet-sver list
 There are two ways of upgrading the projects: 
 - By specifying the project number printing in `dotnet-sver list` result using `--project-number` or `-p` option.
   ```shell
-  dotnet-sver upgrade -p <project-number> [version-part-option]
+  $ dotnet-sver upgrade -p <project-number> [version-part-option]
   
   # For instance, the following command, upgrades the Z part of the version of the project number #3:
-  dotnet-sver upgrade -p 3 --patch 
+  $ dotnet-sver upgrade -p 3 --patch 
   ```
 - And *IF* you want to upgrade all the versions of the all projects, you can pass `-a` or `--all` option.
   ```shell
-  dotnet-sver upgrade -a [version-part-option]
+  $ dotnet-sver upgrade -a [version-part-option]
   
   # For instance, the following command, upgrades the Y part of the version of the all projects.
-  dotnet-sver upgrade -a --minor 
+  $ dotnet-sver upgrade -a --minor 
   ```
   
 ### Downgrade Command
@@ -96,17 +96,17 @@ There are two ways of upgrading the projects:
 There are two ways of downgrading the projects: 
 - By specifying the project number printing in `dotnet-sver list` result using `--project-number` or `-p` option.
   ```shell
-  dotnet-sver downgrade -p <project-number> [version-part-option]
+  $ dotnet-sver downgrade -p <project-number> [version-part-option]
   
   # For instance, the following command, downgrades the Z part of the version of the project number #3:
-  dotnet-sver downgrade -p 3 --patch 
+  $ dotnet-sver downgrade -p 3 --patch 
   ```
 - And *IF* you want to downgrade all the versions of the all projects, you can pass `-a` or `--all` option.
   ```shell
-  dotnet-sver downgrade -a [version-part-option]
+  $ dotnet-sver downgrade -a [version-part-option]
   
   # For instance, the following command, downgrades the Y part of the version of the all projects.
-  dotnet-sver downgrade -a --minor 
+  $ dotnet-sver downgrade -a --minor 
   ```
   
 ### Set Command
@@ -121,17 +121,17 @@ Maybe you'll be more comfortable to set the versions explicitly. I have your bac
 There are two ways of setting the projects: 
 - By specifying the project number printing in `dotnet-sver list` result using `--project-number` or `-p` option.
   ```shell
-  dotnet-sver downgrade -p <project-number> [version-part-option]
+  $ dotnet-sver downgrade -p <project-number> [version-part-option]
   
   # For instance, the following command, downgrades the Z part of the version of the project number #3:
-  dotnet-sver downgrade -p 3 --patch 
+  $ dotnet-sver downgrade -p 3 --patch 
   ```
 - And *IF* you want to downgrade all the versions of the all projects, you can pass `-a` or `--all` option.
   ```shell
-  dotnet-sver downgrade -a [version-part-option]
+  $ dotnet-sver downgrade -a [version-part-option]
   
   # For instance, the following command, downgrades the Y part of the version of the all projects.
-  dotnet-sver downgrade -a --minor 
+  $ dotnet-sver downgrade -a --minor 
   ```
 
 # Contributing
