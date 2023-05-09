@@ -1,6 +1,5 @@
 # dotnet-sver
-***
-`dotnet-sver` is a CLI tool for managing project versions using Semantic Versioning in .NET applications. It provides a set of commands to list, set, upgrade and degrade project versions, making it easy to handle versioning within your development workflow.
+`dotnet-sver` is a CLI tool for managing project versions using Semantic Versioning in .NET applications. It provides a set of commands to list, set, upgrade and downgrade project versions, making it easy to handle versioning within your development workflow.
 
 Generally semantic versioning has three main parts. *MAJOR*, *MINOR* and *PATCH* and represents with the following template: X.Y.Z which X holds the *MAJOR* part, Y holds the *MINOR* and Z holds the *PATCH*.
 
@@ -9,17 +8,15 @@ It also supports pre-release and build versions which will be appended to X.Y.Z.
 > For more information, I refer you to [here](https://semver.org/).
 
 # Features
-***
 - List the project versions within the target solution using `list` command.
 - Upgrade the current version of the projects using `upgrade` command.
-- Degrade the current version of the projects using `degrade` command.
+- Downgrade the current version of the projects using `downgrade` command.
 - Set the version of the projects using the `set` command.
 - Support for Semantic Versioning (MAJOR.MINOR.PATCH).
 - Option to specify the project number for version manipulation.
 - Option to operate on all projects at once.
 
 # Getting Started
-***
 ## Prerequisites
 - Make sure you have latest [.NET SDK](https://dotnet.microsoft.com/en-us/download) installed on your machine.
 
@@ -85,31 +82,31 @@ There are two ways of upgrading the projects:
   $ dotnet-sver upgrade -a --minor 
   ```
   
-### Degrade Command
+### Downgrade Command
  
 *Options:*
 
-- `--project-number` or `-p`: specifying the project targeting for degrading.
-- `--all` or `-a`: degrades all the projects inside the solution.
+- `--project-number` or `-p`: specifying the project targeting for downgrading.
+- `--all` or `-a`: downgrades all the projects inside the solution.
   > Obviously, there should be either -p or -a in the command.
-- `--major`: degrades the X part of the version.
-- `--minor`: degrades the Y part of the version.
-- `--patch`: degrades the Z part of the version.
+- `--major`: downgrades the X part of the version.
+- `--minor`: downgrades the Y part of the version.
+- `--patch`: downgrades the Z part of the version.
 
-There are two ways of degrading the projects: 
+There are two ways of downgrading the projects: 
 - By specifying the project number printing in `dotnet-sver list` result using `--project-number` or `-p` option.
   ```shell
-  $ dotnet-sver degrade -p <project-number> [version-part-option]
+  $ dotnet-sver downgrade -p <project-number> [version-part-option]
   
-  # For instance, the following command, degrades the Z part of the version of the project number #3:
-  $ dotnet-sver degrade -p 3 --patch 
+  # For instance, the following command, downgrades the Z part of the version of the project number #3:
+  $ dotnet-sver downgrade -p 3 --patch 
   ```
-- And *IF* you want to degrade all the versions of the all projects, you can pass `-a` or `--all` option.
+- And *IF* you want to downgrade all the versions of the all projects, you can pass `-a` or `--all` option.
   ```shell
-  $ dotnet-sver degrade -a [version-part-option]
+  $ dotnet-sver downgrade -a [version-part-option]
   
-  # For instance, the following command, degrades the Y part of the version of the all projects.
-  $ dotnet-sver degrade -a --minor 
+  # For instance, the following command, downgrades the Y part of the version of the all projects.
+  $ dotnet-sver downgrade -a --minor 
   ```
   
 ### Set Command
@@ -118,23 +115,23 @@ Maybe you'll be more comfortable to set the versions explicitly. I have your bac
 *Options:*
 
 - `--project-number` or `-p`: specifying the project targeting for upgrading.
-- `--all` or `-a`: degrades all the projects inside the solution.
+- `--all` or `-a`: downgrades all the projects inside the solution.
   > Obviously, there should be either -p or -a in the command.
 
 There are two ways of setting the projects: 
 - By specifying the project number printing in `dotnet-sver list` result using `--project-number` or `-p` option.
   ```shell
-  $ dotnet-sver degrade -p <project-number> [version-part-option]
+  $ dotnet-sver downgrade -p <project-number> [version-part-option]
   
-  # For instance, the following command, degrades the Z part of the version of the project number #3:
-  $ dotnet-sver degrade -p 3 --patch 
+  # For instance, the following command, downgrades the Z part of the version of the project number #3:
+  $ dotnet-sver downgrade -p 3 --patch 
   ```
-- And *IF* you want to degrade all the versions of the all projects, you can pass `-a` or `--all` option.
+- And *IF* you want to downgrade all the versions of the all projects, you can pass `-a` or `--all` option.
   ```shell
-  $ dotnet-sver degrade -a [version-part-option]
+  $ dotnet-sver downgrade -a [version-part-option]
   
-  # For instance, the following command, degrades the Y part of the version of the all projects.
-  $ dotnet-sver degrade -a --minor 
+  # For instance, the following command, downgrades the Y part of the version of the all projects.
+  $ dotnet-sver downgrade -a --minor 
   ```
 
 # Contributing
